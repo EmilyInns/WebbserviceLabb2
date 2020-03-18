@@ -15,10 +15,10 @@ class GameModelAssembler implements RepresentationModelAssembler<Game, EntityMod
 
 
     @Override
-    public EntityModel<Game> toModel(Game person) {
-        return new EntityModel<>(person,
-                linkTo(methodOn(GameController.class).one(person.getId())).withSelfRel(),
-                linkTo(methodOn(GameController.class).all()).withRel("persons"));
+    public EntityModel<Game> toModel(Game game) {
+        return new EntityModel<>(game,
+                linkTo(methodOn(GameController.class).one(game.getId())).withSelfRel(),
+                linkTo(methodOn(GameController.class).all()).withRel("games"));
     }
 
     @Override

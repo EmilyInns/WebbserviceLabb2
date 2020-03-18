@@ -31,10 +31,10 @@ public class GameController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<EntityModel<Game>> one(@PathVariable long id) {
-        return repository.findById(id)
-                .map(assembler::toModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            return repository.findById(id)
+                    .map(assembler::toModel)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -47,8 +47,8 @@ public class GameController {
         return new ResponseEntity<>(p, headers, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteGame(@PathVariable Long id) {
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<EntityModel<Game>> deleteGame(@PathVariable long id) {
         if (repository.existsById(id)) {
             //log.info("Product deleted");
             repository.deleteById(id);
@@ -62,6 +62,7 @@ public class GameController {
         return repository.findById(id)
                 .map(game -> {
                     game.setName(newGame.getName());
+                    game.setDeveloper(newGame.getDeveloper());
                     repository.save(game);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setLocation(linkTo(GameController.class).slash(game.getId()).toUri());
@@ -77,6 +78,8 @@ public class GameController {
                 .map(game -> {
                     if (newGame.getName() != null)
                         game.setName(newGame.getName());
+                    if (newGame.getDeveloper() != null)
+                        game.setDeveloper(newGame.getDeveloper());
 
                     repository.save(game);
                     HttpHeaders headers = new HttpHeaders();
